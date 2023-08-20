@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/266.25d8336b.chunk.js","mappings":"gMAAe,SAASA,IACtB,OACE,0BACE,mGAKL,C","sources":["pages/Home.js"],"sourcesContent":["export default function Home() {\n  return (\n    <div>\n      <p>\n        Welcome! To start using the phone book you need to register or log in.\n      </p>\n    </div>\n  );\n}\n"],"names":["Home"],"sourceRoot":""}

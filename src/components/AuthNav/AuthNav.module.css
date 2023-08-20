@@ -1,0 +1,16 @@
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  font-weight: 700;
+  color: #2c2f30;
+}
+
+.link.active {
+  color: #0039a3;
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+}

@@ -1,10 +1,14 @@
 .form_contacts {
+  /* border-style: solid; */
   border-style: solid;
   padding: 20px;
-  width: 300px;
+  width: 180px;
 }
 
 .form_input {
   display: block;
   margin-bottom: 20px;
+  padding: 5px;
+  border: 1px solid #000;
+  border-radius: 5px;
 }

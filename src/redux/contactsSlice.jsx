@@ -1,43 +1,55 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { addContact, deleteContact, fetchContacts } from './operations';
-
+import { fetchContacts, addContact, deleteContact } from '../api/ContactsAPI';
 const initialState = {
-  items: [],
-  isLoading: false,
-  error: null,
+  contacts: {
+    items: [],
+    isLoading: false,
+    error: null,
+  },
+  filter: '',
+};
+const handlePending = state => {
+  state.contacts = { ...state.contacts, isLoading: true };
 };
 
-const handlePending = state => {
-  state.isLoading = true;
+const handleRejected = (state, { payload }) => {
+  state.contacts = {
+    ...state.contacts,
+    isLoading: false,
+    error: payload,
+  };
 };
-const handleRejected = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
+
+const handleFulfild = state => {
+  state.contacts = { ...state.contacts, isLoading: false, error: null };
 };
-const contactsSlice = createSlice({
+
+const handleFulfildGet = (state, { payload }) => {
+  state.contacts = { ...state.contacts, items: payload };
+};
+
+const handleFulfildCreate = (state, { payload }) => {
+  state.contacts = {
+    ...state.contacts,
+    items: [payload, ...state.contacts.items],
+  };
+};
+const handleFulfildDelete = (state, { payload }) => {
+  state.contacts = {
+    ...state.contacts,
+    items: state.contacts.items.filter(el => el.id !== payload.id),
+  };
+};
+
+export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
 
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        state.items = action.payload;
-      })
-      .addCase(addContact.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        state.items.push(action.payload);
-      })
-      .addCase(deleteContact.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.items.findIndex(
-          task => task.id === action.payload.id
-        );
-        state.items.splice(index, 1);
-      })
+      .addCase(fetchContacts.fulfilled, handleFulfildGet)
+      .addCase(addContact.fulfilled, handleFulfildCreate)
+      .addCase(deleteContact.fulfilled, handleFulfildDelete)
       .addMatcher(
         isAnyOf(
           fetchContacts.pending,
@@ -53,6 +65,14 @@ const contactsSlice = createSlice({
           deleteContact.rejected
         ),
         handleRejected
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.fulfilled,
+          addContact.fulfilled,
+          deleteContact.fulfilled
+        ),
+        handleFulfild
       );
   },
 });

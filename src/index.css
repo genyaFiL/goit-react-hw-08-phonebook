@@ -13,3 +13,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+li {
+  list-style-type: none;
+}
+
+button {
+  display: inline-block;
+  margin: 10px 0px 10px 35px;
+  padding: 5px 10px;
+  background-color: #1a5276;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+  background-color: #154360;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(26, 82, 118, 0.7);
+}

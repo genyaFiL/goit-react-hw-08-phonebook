@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import css from './ContactFormStyles.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/operations';
 import { getContacts } from 'redux/selectors';
+import { addContact } from 'api/ContactsAPI';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const contacts = useSelector(getContacts); // get all  contacts
+  const { items, isLoading, error } = useSelector(getContacts);
+
   const dispatch = useDispatch(); // get actions
+
+  useEffect(() => {
+    if (!error && isLoading) {
+      setName('');
+      setPhone('');
+    }
+  }, [error, isLoading, dispatch]);
 
   const handleChange = ({ target }) => {
     if (target.name === 'name') setName(target.value);
@@ -19,18 +27,16 @@ export default function ContactForm() {
   const handleSubmit = e => {
     e.preventDefault();
     const normalizedName = name.toLocaleLowerCase();
-    contacts.find(
-      contact => contact.name.toLocaleLowerCase() === normalizedName
-    )
+    items.find(contact => contact.name.toLocaleLowerCase() === normalizedName)
       ? alert(name + ' is allready in contacts')
-      : dispatch(addContact({ name, phone }));
+      : dispatch(addContact({ name, number: phone }));
     setName('');
     setPhone('');
   };
 
   return (
     <>
-      <h1>Phonebook</h1>
+      {/* <h1>Phonebook</h1> */}
       <form onSubmit={handleSubmit} className={css.form_contacts}>
         <label htmlFor="inputName">Name</label>
         <input

@@ -18,8 +18,11 @@ export default function Filter() {
         {items.length !== 0 && (
           <>
             <h2>Contacts</h2>
-            <label htmlFor="inputFind">Find contacts by name</label>
+            <label className={css.label} htmlFor="inputFind">
+              Find contacts by name
+            </label>
             <input
+              className={css.input}
               placeholder="Search name"
               type="text"
               name="name"
